@@ -16,7 +16,7 @@ const ImageLayout = styled.div`
   width: 100%;
   max-width: 375px;
   height: 1024px;
-  transform: translateY(0%);
+  transform: translateX(0%);
   transition: transform ease 480ms,
   max-width ease 480ms;
 
@@ -30,66 +30,72 @@ const ImageBox = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
-  transition: all ease 480ms;
+  transition: left ease 480ms, top ease 480ms;
+
+  --size_view_calc: (10 * 10vw / 2);
+
+  width: min(max(var(--size_view_calc), var(--min-width)), var(--max-width));
+  height: min(max(var(--size_view_calc), var(--min-height)), var(--max-height));
+
+  top: var(--min-top);
+  left: var(--max-top);
+
+  @media screen and (min-width: 1024px) {
+    top: var(--max-top);
+    left: var(--max-left);
+  }
 
   &.i-1 {
     background-image: url("/assets/1.png");
 
-    width: 152px;
-    height: 112px;
-    left: 36px;
-    top: 36px;
+    --min-width: 152px;
+    --max-width: 332px;
+    --min-height: 112px;
+    --max-height: 259px;
 
-    @media screen and (min-width: 1024px) {
-      width: 332px;
-      height: 259px;
-      top: 43px;
-      left: 472px;
-    }
+    --min-top: 36px;
+    --max-top: 43px;
+    --min-left: 36px;
+    --max-left: 472px;
   }
 
   &.i-2 {
     background-image: url("/assets/2.png");
-    width: 81px;
-    height: 66px;
-    left: 263px;
-    top: 205px;
 
-    @media screen and (min-width: 1024px) {
-      width: 172px;
-      height: 132px;
-      left: 995px;
-      top: 150px;
-    }
+    --min-width: 81px;
+    --max-width: 172px;
+    --min-height: 66px;
+    --max-height: 132px;
+
+    --min-top: 205px;
+    --max-top: 150px;
+    --min-left: 263px;
+    --max-left: 995px;
   }
 
   &.i-3 {
     background-image: url("/assets/3.png");
 
-    width: 128px;
-    height: 99px;
-    left: 0px;
-    top: 221px;
+    --min-width: 128px;
+    --max-width: 231px;
+    --min-height: 99px;
+    --max-height: 184px;
 
-    @media screen and (min-width: 1024px) {
-      width: 231px;
-      height: 184px;
-      left: 50px;
-      top: 210px;
-    }
+    --min-top: 221px;
+    --max-top: 210px;
+    --min-left: 0px;
+    --max-left: 50px;
   }
 
   &.i-4 {
     background-image: url("/assets/4.png");
 
-    width: 126px;
-    height: 132px;
+    width: min(max(var(--size_view_calc), 128px), 231px);
+    height: min(max(var(--size_view_calc), 128px), 231px);
     left: 345px;
     top: 271px;
 
     @media screen and (min-width: 1024px) {
-      width: 200px;
-      height: 210px;
       left: 1258px;
       top: 440px;
     }
@@ -98,14 +104,12 @@ const ImageBox = styled.div`
   &.i-5 {
     background-image: url("/assets/5.png");
 
-    width: 207px;
-    height: 175px;
+    width:  min(max(var(--size_view_calc), 128px), 231px);
+    height:  min(max(var(--size_view_calc), 128px), 231px);
     left: -155px;
     top: 496px;
 
     @media screen and (min-width: 1024px) {
-      width: 413px;
-      height: 290px;
       left: 0px;
       top: 500px;
     }
@@ -114,14 +118,12 @@ const ImageBox = styled.div`
   &.i-6 {
     background-image: url("/assets/6.png");
 
-    width: 215px;
-    height: 162px;
+    width:  min(max(var(--size_view_calc), 128px), 231px);
+    height:  min(max(var(--size_view_calc), 128px), 231px);
     left: 160px;
     top: 584px;
 
     @media screen and (min-width: 1024px) {
-      width: 355px;
-      height: 285px;
       left: 903px;
       top: 650px;
     }
