@@ -1,9 +1,8 @@
 import Head from 'next/head'
-import Image from 'next/image'
 
-import { useState, useEffect } from 'react';
 import { styled } from '@linaria/react';
-import request from '@/utils/request';
+
+import VideoSection from '@/components/VideoSection';
 
 
 
@@ -16,34 +15,6 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
 `;
-
-const VideoContainer = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const VideoLoadingSkeleton = styled.div`
-  width: 100%;
-  /* height: 100%; */
-  /* max-height: 737px; */
-  height: 737px;
-
-  background-image: url("/assets/bannerPlaceholder.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-`;
-
-const VideoBanner = styled.div`
-  width: 100%;
-  height: 100%;
-  max-height: 737px;
-  overflow-y: hidden;
-
-  position: relative;
-`;
-
-
 
 const Container = styled.div`
   position: relative;
@@ -58,7 +29,7 @@ const TextLayout = styled.div`
   position: absolute;
   width: 100%;
   height: 1024px;
-  z-index: 1;
+  z-index: 100;
 
   display: flex;
   justify-content: center;
@@ -72,19 +43,17 @@ const Title = styled.div`
   font-weight: 400;
   /* font-size: 32px; */
   font-size: clamp(32px, 5vw, 48px);
-  /* font-size: max(32px, min(3.75vw, 48px)); */
   line-height: 65px;
   text-align: center;
 
-  @media screen and (min-width: 1024px) {
-    /* font-size: 48px; */
-  }
+  /* @media screen and (min-width: 1024px) {
+    font-size: 48px;
+  } */
 `;
 
 const ImageWrapper = styled.div`
   width: 100%;
   height: 1024px;
-  /* position: relative; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,17 +65,17 @@ const ImageLayout = styled.div`
   width: 100%;
   max-width: 375px;
   height: 1024px;
-  margin-left: auto;
-  margin-right: auto;
+  transform: translateY(0%);
+  transition: transform ease 480ms,
+  max-width ease 480ms;
 
   @media screen and (min-width: 1024px) {
-    /* max-width: 100%; */
+    max-width: 100%;
   }
 `;
 
 const ImageBox = styled.div`
-  position: relative;
-  background-color: #aaaaaa;
+  position: absolute;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
@@ -145,11 +114,11 @@ const ImageBox = styled.div`
 
   &.i-3 {
     background-image: url("/assets/3.png");
+
     width: 128px;
     height: 99px;
     left: 0px;
     top: 221px;
-    /* top: calc(221px - (36px + 112px)); */
 
     @media screen and (min-width: 1024px) {
       width: 231px;
@@ -211,27 +180,6 @@ const ImageBox = styled.div`
 
 
 export default function HomePage() {
-  const [videoSrc, setVideoSrc] = useState('');
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await request('/api/video');
-        // console.log('response', response);
-
-        if (response.status === 200) {
-          const data = response.data;
-          // console.log('data', data);
-          setVideoSrc(data.src);
-        } else {
-          console.error('get video failed');
-        }
-      } catch (error) {
-        console.error('[request video error] ', error);
-      }
-    })();
-  }, []);
-
   return (
     <>
       <Head>
@@ -243,28 +191,7 @@ export default function HomePage() {
 
       <main>
         <Wrapper>
-          <VideoContainer>
-            {
-              videoSrc === '' ? (
-                <VideoLoadingSkeleton />
-              ) : (
-                <VideoBanner>
-                  <video
-                    width="100%"
-                    height="100%"
-                    preload="true"
-                    muted
-                    loop
-                    playsInline
-                    autoPlay
-                  >
-                    <source src={videoSrc} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </VideoBanner>
-              )
-            }
-          </VideoContainer>
+          <VideoSection />
 
           <Container>
             <TextLayout>
