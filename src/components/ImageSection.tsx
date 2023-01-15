@@ -20,7 +20,7 @@ const ImageLayout = styled.div`
   transition: transform ease 480ms,
   max-width ease 480ms;
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1440px) {
     max-width: 100%;
   }
 `;
@@ -40,7 +40,7 @@ const ImageBox = styled.div`
     left: 36px;
     top: 36px;
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1440px) {
       width: 332px;
       height: 259px;
       top: 43px;
@@ -55,7 +55,7 @@ const ImageBox = styled.div`
     left: 263px;
     top: 205px;
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1440px) {
       width: 172px;
       height: 132px;
       left: 995px;
@@ -71,7 +71,7 @@ const ImageBox = styled.div`
     left: 0px;
     top: 221px;
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1440px) {
       width: 231px;
       height: 184px;
       left: 50px;
@@ -87,7 +87,7 @@ const ImageBox = styled.div`
     left: 345px;
     top: 271px;
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1440px) {
       width: 200px;
       height: 210px;
       left: 1258px;
@@ -103,7 +103,7 @@ const ImageBox = styled.div`
     left: -155px;
     top: 496px;
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1440px) {
       width: 413px;
       height: 290px;
       left: 0px;
@@ -119,7 +119,7 @@ const ImageBox = styled.div`
     left: 160px;
     top: 584px;
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1440px) {
       width: 355px;
       height: 285px;
       left: 903px;
