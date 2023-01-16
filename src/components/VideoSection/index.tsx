@@ -104,11 +104,11 @@ export default function VideoSection() {
         bannerObserve = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              // 目標元素進入 viewport 時執行
-              console.log('view port');
+              // console.log('viewport');
+              videoElement.play();
             } else {
-              // 目標元素離開 viewport 時執行
-              console.log('not view port');
+              // console.log('not viewport');
+              videoElement.pause();
             }
           });
         });

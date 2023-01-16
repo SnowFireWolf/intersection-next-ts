@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 
-// github api
+// axios base api
 export default axios.create({
   baseURL: '/',
   headers: {

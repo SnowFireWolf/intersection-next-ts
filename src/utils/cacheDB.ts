@@ -9,15 +9,10 @@ export async function initCacheDB() {
   //   return;
   // }
 
-  // const idb = window.indexedDB.open("cache-system@v1", 1);
-
   const db = await openDB('cache-system@v1', 1, {
     upgrade(db) {
       // Create a store of objects
       db.createObjectStore("cache", {
-        // The 'id' property of the object will be the key.
-        // keyPath: "id",
-        // If it isn't explicitly set, create a value by auto incrementing.
         autoIncrement: true
       });
     }
