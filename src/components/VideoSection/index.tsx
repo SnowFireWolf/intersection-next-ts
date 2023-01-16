@@ -1,8 +1,7 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { styled } from '@linaria/react';
-import request from '@/utils/request';
-import { initCacheDB } from '@/utils/cacheDB';
 
+import { initCacheDB } from '@/utils/cacheDB';
 import { timestamp, getVideoURL, getVideoAndReturnBlob } from './utils';
 
 
@@ -52,9 +51,10 @@ const VideoBanner = styled.div`
 export default function VideoSection() {
   const videoBannerRef = useRef<HTMLDivElement>(null);
 
-  // cache system
+  // cache system and video view
   useEffect(() => {
     let newObjectURL = '';
+    let bannerObserve: IntersectionObserver | null = null;
 
     (async () => {
       const { db, idbCache } = await initCacheDB();
@@ -69,47 +69,60 @@ export default function VideoSection() {
           maxAge: number;
         } = await idbCache.get('bannerVideo');
 
+        let videoBlob: Blob;
+
         if (cacheVideo !== undefined && cacheVideo.data !== null) {
           // max age check
           if (cacheVideo.maxAge > (timestamp() / 1000)) {
-            console.log(`we won't reload video data`);
-
-            const videoBlob = cacheVideo.data;
-            newObjectURL = URL.createObjectURL(videoBlob);
-            videoElement.src = newObjectURL;
-
+            // console.log(`we won't reload video data`);
+            videoBlob = cacheVideo.data;
           } else {
-            console.log(`we will reload video data`);
-
+            // console.log(`we will reload video data`);
             const videoSrc = await getVideoURL();
-            const videoBlob = await getVideoAndReturnBlob(videoSrc);
-  
-            newObjectURL = URL.createObjectURL(videoBlob);
-            videoElement.src = newObjectURL;
+            videoBlob = await getVideoAndReturnBlob(videoSrc);
 
-            await idbCache.set('bannerVideo', {
+            idbCache.set('bannerVideo', {
               data: videoBlob,
               maxAge: (timestamp() / 1000) + 3600,
             });
           }
         } else {
           const videoSrc = await getVideoURL();
-          const videoBlob = await getVideoAndReturnBlob(videoSrc);
+          videoBlob = await getVideoAndReturnBlob(videoSrc);
 
-          newObjectURL = URL.createObjectURL(videoBlob);
-          videoElement.src = newObjectURL;
-
-          await idbCache.set('bannerVideo', {
+          idbCache.set('bannerVideo', {
             data: videoBlob,
             maxAge: (timestamp() / 1000) + 3600,
           });
         }
+
+        // blob blob sec
+        newObjectURL = URL.createObjectURL(videoBlob);
+        videoElement.src = newObjectURL;
+
+        // intersection observer
+        bannerObserve = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // 目標元素進入 viewport 時執行
+              console.log('view port');
+            } else {
+              // 目標元素離開 viewport 時執行
+              console.log('not view port');
+            }
+          });
+        });
+
+        bannerObserve.observe(videoBannerElement);
       }
     })();
 
     return () => {
       // delete memory cache
       URL.revokeObjectURL(newObjectURL);
+
+      // disconnect all observe
+      bannerObserve !== null && bannerObserve.disconnect();
     }
   }, []);
 
@@ -117,7 +130,6 @@ export default function VideoSection() {
     <VideoContainer>
       <VideoBanner ref={videoBannerRef}>
         <video
-          // preload
           muted
           loop
           playsInline
@@ -125,7 +137,6 @@ export default function VideoSection() {
           poster='/assets/bannerPlaceholder.png'
         // src={videoData.src}
         >
-          {/* <source src={videoSrc} type="video/mp4" /> */}
           Your browser does not support the video tag.
         </video>
       </VideoBanner>
